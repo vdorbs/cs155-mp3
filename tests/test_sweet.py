@@ -6,7 +6,26 @@ class TestSweet:
         self.tests = []
 
     def load_data(self, path):
-        pass
+        sonnets = []
+        sonnet = None
+        with open(path, 'r') as fid:
+            lines = fid.readlines()
+            for line in lines:
+                line = line.strip()
+                if line.isdigit():
+                    sonnet = []
+                else:
+                    if line == '':
+                        if sonnet is not None:
+                            # Ignoring sonnets without 14 lines
+                            if len(sonnet) is 14:
+                                sonnets.append(sonnet)
+                                sonnet = None
+                    else:
+                        sonnet.append(line)
+        if len(sonnet) is 14:
+            sonnets.append(sonnet)
+        return sonnets
 
     def process_data(self):
         self.processed_data = [self.apply_pipeline(p, self.data) for p in self.pipelines]
