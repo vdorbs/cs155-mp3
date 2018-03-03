@@ -1,3 +1,3 @@
-from test_sweet import TestSweet
+from .test_sweet import TestSweet
 
 ts = TestSweet()

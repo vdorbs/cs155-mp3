@@ -1,10 +1,12 @@
-
 class TestSweet:
     def __init__(self, path='data/shakespeare.txt'):
         self.data = self.load_data(path)
         self.pipelines = []
         self.processed_data = []
-        self.tests = [{model: model, data: data}]
+        self.tests = []
+
+    def load_data(self, path):
+        pass
 
     def process_data(self):
         self.processed_data = [self.apply_pipeline(p, self.data) for p in self.pipelines]
