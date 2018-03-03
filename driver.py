@@ -14,7 +14,7 @@ if __name__ == '__main__':
         ts = {'bijan': tests.bijan, 'kristjan': tests.kristjan, 'victor': tests.victor}[sys.argv[1]].ts
         ts.process_data()
         ts.run_tests()
-    except IndexError or KeyError:
+    except Exception as _:
         print('\nONE.\nOF.\nUS.\nಠ‿ಠ')
         print('It would be swell if you specified bijan, kristjan, or victor.')
         print('Up to you though.\n')
