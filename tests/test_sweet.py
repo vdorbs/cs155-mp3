@@ -8,7 +8,10 @@ class TestSweet:
         self.data = self.load_data(path)
         self.pipelines = []
         self.processed_data = []
-        self.tests = [{model: model, data: data}]
+        self.tests = []
+
+    def load_data(self, path):
+        pass
 
     def process_data(self):
         """
