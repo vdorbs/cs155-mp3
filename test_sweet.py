@@ -1,4 +1,8 @@
+"""
+test_sweet.py
 
+A class for training models and preprocessing data
+"""
 class TestSweet:
     def __init__(self, path='data/shakespeare.txt'):
         self.data = self.load_data(path)
@@ -7,9 +11,12 @@ class TestSweet:
         self.tests = [{model: model, data: data}]
 
     def process_data(self):
-        self.processed_data = [self.apply_pipeline(p, self.data) for p in self.pipelines]
+        """
+        Applies all data processing pipelines to the training data
+        """
+        self.processed_data = [self._apply_pipeline(p, self.data) for p in self.pipelines]
 
-    def apply_pipeline(self, pipeline, data):
+    def _apply_pipeline(self, pipeline, data):
         """
         Applies the preproccing pipeline to data.
 
@@ -39,8 +46,19 @@ class TestSweet:
         return idx
 
     def add_model(self, model, idx):
+        """
+        Registers a new model to the test suite.
+
+        Inputs:
+        model:          The model to be traines
+        idx:            The index of the preprocessing pipeline which the
+                        dataset should be processed with.
+        """
         self.tests.append({'model': model, 'data': self.processed_data[idx]})
 
     def run_tests(self):
+        """
+        Runs all tests in the suite.
+        """
         for test in self.tests:
             pass
