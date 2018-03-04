@@ -25,11 +25,13 @@ def split_line_by_syllable(line, pyphen):
 
 def create_token_dictionary(data):
     unique_elems = set()
-    for sonnet in data:
-        for line in sonnet:
-            for elem in line:
-                unique_elems.add(elem)
+    for line in data:
+        for elem in line:
+            unique_elems.add(elem)
     return {elem:token for token, elem in enumerate(unique_elems)}
+
+def apply_token_dictionary(token_dictionary, data):
+    return [[token_dictionary[elem] for elem in line] for line in data]
 
 def get_sequence_lengths(data):
     return [len(line) for line in data]
