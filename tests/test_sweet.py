@@ -37,6 +37,7 @@ class TestSweet:
         Applies all data processing pipelines to the training data
         """
         self.processed_data = [self._apply_pipeline(p, self.data) for p in self.pipelines]
+        print(self.processed_data)
 
     def _apply_pipeline(self, pipeline, data):
         """
