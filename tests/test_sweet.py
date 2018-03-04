@@ -47,20 +47,23 @@ class TestSweet:
         self.pipelines.append(pipeline)
         return idx
 
-    def add_model(self, model, idx):
+    def add_test(self, test, idx):
         """
-        Registers a new model to the test suite.
+        Registers a new test to the test suite.
 
         Inputs:
-        model:          The model to be traines
+        test:           The test to be run
         idx:            The index of the preprocessing pipeline which the
                         dataset should be processed with.
         """
-        self.tests.append({'model': model, 'data': self.processed_data[idx]})
+        self.tests.append({'test': test, 'data': idx})
 
     def run_tests(self):
         """
         Runs all tests in the suite.
         """
+        if self.processed_data == []:
+            raise Exception('Data unprocessed')
+
         for test in self.tests:
-            pass
+            test['test'].fit(self.processed_data[test['data']])

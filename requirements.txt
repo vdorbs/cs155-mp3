@@ -1,5 +1,7 @@
+hmmlearn==0.2.0
 Keras==2.1.4
 numpy==1.14.1
+Pyphen==0.9.4
 PyYAML==3.12
 scikit-learn==0.19.1
 scipy==1.0.0
