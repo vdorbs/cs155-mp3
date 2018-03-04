@@ -6,7 +6,7 @@ import tests.victor
 
 """
 Runs all test cases for a specified user
-Usage: python3 driver.py [name]
+Usage: python3 driver.py name
 """
 
 if __name__ == '__main__':
