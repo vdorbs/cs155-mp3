@@ -1,4 +1,6 @@
 import itertools
+from numpy import cumsum, floor
+from numpy.random import rand
 
 def append_space(syllable_list):
     """
@@ -35,6 +37,9 @@ def apply_token_dictionary(token_dictionary, data):
 
 def get_sequence_lengths(data):
     return [len(line) for line in data]
+
+def sample(p):
+    return floor(cumsum(p) - rand()).tolist().index(0)
 
 def load_data(path):
     """
