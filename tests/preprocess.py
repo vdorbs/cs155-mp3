@@ -15,7 +15,7 @@ def strip_punctuation(data):
     Output:
     data:       A list of lists of strings with punctuation stripped
     """
-    return [[line.strip('.,;:-') for line in sonnet] for sonnet in data]
+    return [[line.strip('.,;:-!?()') for line in sonnet] for sonnet in data]
 
 def split_by_words(data):
     """
@@ -26,7 +26,6 @@ def split_by_words(data):
     data:       A list of lists of lists of words
     """
     return [[[word for word in line.split(' ')] for line in sonnet] for sonnet in data]
-
 
 def split_by_syllables(data):
     """
