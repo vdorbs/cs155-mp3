@@ -24,7 +24,7 @@ def split_line_by_syllable(line, pyphen):
     return list(itertools.chain(*[append_space(pyphen(word).split('-')) for word in line]))
 
 
-def load_data(self, path):
+def load_data(path):
     """
     Input:
     path:       Path to dataset in filesystem
