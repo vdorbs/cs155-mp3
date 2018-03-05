@@ -1,6 +1,6 @@
 from .test_sweet import TestSweet
 from .test import Test
-from .preprocess import split_by_words, split_by_syllables, flatten_sonnets
+from .preprocess import strip_punctuation, split_by_words, split_by_syllables, flatten_sonnets
 from .utils import get_sequence_lengths, sample
 
 from numpy import concatenate, reshape
@@ -41,16 +41,19 @@ def _run_words(model, token_to_elem):
 
 ts = TestSweet()
 
-# model = MultinomialHMM(n_components=5, n_iter=10, verbose=True)
-# fit = lambda data: _fit(model, data)
-# run = lambda token_to_elem: _run_syllables(model, token_to_elem)
-# pipeline = [split_by_words, split_by_syllables, flatten_sonnets]
-# idx = ts.add_pipeline(pipeline)
-# ts.add_test(Test(model, fit, run), idx)
+states = 25
+n_iter = 200
 
-model = MultinomialHMM(n_components=5, n_iter=10, verbose=True)
+model = MultinomialHMM(n_components=states, n_iter=n_iter, verbose=True)
+fit = lambda data: _fit(model, data)
+run = lambda token_to_elem: _run_syllables(model, token_to_elem)
+pipeline = [strip_punctuation, split_by_words, split_by_syllables, flatten_sonnets]
+idx = ts.add_pipeline(pipeline)
+ts.add_test(Test(model, fit, run), idx)
+
+model = MultinomialHMM(n_components=states, n_iter=n_iter, verbose=True)
 fit = lambda data: _fit(model, data)
 run = lambda token_to_elem: _run_words(model, token_to_elem)
-pipeline = [split_by_words, flatten_sonnets]
+pipeline = [strip_punctuation, split_by_words, flatten_sonnets]
 idx = ts.add_pipeline(pipeline)
 ts.add_test(Test(model, fit, run), idx)
