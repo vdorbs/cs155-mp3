@@ -1,3 +1,4 @@
+import json
 import itertools
 from numpy import cumsum, floor
 from numpy.random import rand
@@ -40,6 +41,10 @@ def get_sequence_lengths(data):
 
 def sample(p):
     return floor(cumsum(p) - rand()).tolist().index(0)
+
+def load_rhymes(path='data/rhyming_dictionary.json'):
+    with open(path, 'r') as fh:
+        return json.loads(fh.read())
 
 def load_data(path):
     """
