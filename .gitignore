@@ -1,5 +1,6 @@
 .venv
-data
+data/*
+!data/rhyming_dictionary.json
 .DS_Store
 __pycache__
 *.swp
