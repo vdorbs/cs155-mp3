@@ -29,6 +29,5 @@ def busta_rhymes(path='data/shakespeare.txt'):
     with open('data/rhyming_dictionary.json', 'w') as fh:
         fh.write(json.dumps(rhymes))
 
-
 if __name__ == '__main__':
     busta_rhymes()
