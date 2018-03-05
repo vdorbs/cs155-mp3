@@ -17,7 +17,7 @@ def strip_punctuation(data):
     """
     return [[line.strip('.,;:-!?()') for line in sonnet] for sonnet in data]
 
-def join_sonnets(data)
+def join_sonnets(data):
     """
     Input:
     data:       A list of lists of strings
