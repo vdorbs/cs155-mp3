@@ -76,20 +76,20 @@ def load_data(path):
     return sonnets
 
 def condition_rhymable(rhyming_dictionary, elem_to_token, p):
-    p_cond = np.zeros(p.shape)
+    p_cond = zeros(p.shape)
     for rhymable in rhyming_dictionary.keys():
         token = elem_to_token[rhymable]
         p_cond[token] = p[token]
     return p_cond / sum(p_cond)
 
 def condition_rhyme(rhyming_dictionary, elem_to_token, word, p):
-    p_cond = np.zeros(p.shape)
+    p_cond = zeros(p.shape)
     for rhyming in rhyming_dictionary[word]:
         token = elem_to_token[rhyming]
         p_cond[token] = p[token]
     return p_cond / sum(p_cond)
 
-def enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, elem_to_token, p_emit, line_no):
+def enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no):
     if line_no not in leaders:
         leader = followers_to_leaders[line_no]
         p = condition_rhyme(rhyming_dictionary, elem_to_token, rhyming_struct[leader], p_emit)
@@ -101,9 +101,9 @@ def enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dicti
         rhyming_struct[line_no] = word
     return rhyming_struct, word
 
-
-def enforce_sonnet(rhyming_struct, rhyming_dictionary, elem_to_token, p_emit, line_no):
-    leaders = [0, 1, 4, 5, 8, 9, 12]
-    followers_to_leaders = {line_no + 1:line_no for line_no in leaders}
-    rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, elem_to_token, p_emit, line_no)
+def enforce_sonnet(rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no):
+    leaders = [2, 3, 6, 7, 10, 11, 13]
+    followers = [0, 1, 4, 5, 8, 9, 12]
+    followers_to_leaders = {follower:leader for follower, leader in zip(followers, leaders)}
+    rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no)
     return rhyming_struct, word

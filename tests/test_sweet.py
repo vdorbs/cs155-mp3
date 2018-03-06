@@ -3,7 +3,7 @@ test_sweet.py
 
 A class for training models and preprocessing data
 """
-from .utils import load_data, create_token_dictionary, apply_token_dictionary
+from .utils import load_data, create_token_dictionary, apply_token_dictionary, load_rhymes
 
 class TestSweet:
     def __init__(self, path='data/shakespeare.txt'):
@@ -69,7 +69,9 @@ class TestSweet:
         if self.processed_data == []:
             raise Exception('Data unprocessed')
 
+        rhyming_dictionary = load_rhymes()
+
         for test in self.tests:
             test['test'].fit(self.processed_data[test['data']])
-            sequence = test['test'].run(self.token_to_elems[test['data']])
+            sequence = test['test'].run(self.token_to_elems[test['data']], rhyming_dictionary)
             print(sequence)
