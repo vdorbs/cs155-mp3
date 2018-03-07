@@ -36,7 +36,7 @@ def fit(data):
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
     model.fit(x, y, epochs=100, verbose=1)
 
-def run(token_to_elem):
+def run(token_to_elem, rhyming_dictionary=None):
     seed = "shall i compare thee to a summer's day?\n"
     elem_to_token = {v:k for k, v in token_to_elem.items()}
     poem_char_indices = [elem_to_token[char] for char in seed]
