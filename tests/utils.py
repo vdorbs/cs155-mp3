@@ -1,6 +1,6 @@
 import json
 import itertools
-from numpy import cumsum, floor
+from numpy import cumsum, floor, zeros
 from numpy.random import rand
 
 def append_space(syllable_list):
@@ -74,3 +74,36 @@ def load_data(path):
     if len(sonnet) is 14:
         sonnets.append(sonnet)
     return sonnets
+
+def condition_rhymable(rhyming_dictionary, elem_to_token, p):
+    p_cond = zeros(p.shape)
+    for rhymable in rhyming_dictionary.keys():
+        token = elem_to_token[rhymable]
+        p_cond[token] = p[token]
+    return p_cond / sum(p_cond)
+
+def condition_rhyme(rhyming_dictionary, elem_to_token, word, p):
+    p_cond = zeros(p.shape)
+    for rhyming in rhyming_dictionary[word]:
+        token = elem_to_token[rhyming]
+        p_cond[token] = p[token]
+    return p_cond / sum(p_cond)
+
+def enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no):
+    if line_no not in leaders:
+        leader = followers_to_leaders[line_no]
+        p = condition_rhyme(rhyming_dictionary, elem_to_token, rhyming_struct[leader], p_emit)
+    else:
+        p = condition_rhymable(rhyming_dictionary, elem_to_token, p_emit)
+    emission = sample(p)
+    word = token_to_elem[emission]
+    if line_no in leaders:
+        rhyming_struct[line_no] = word
+    return rhyming_struct, word
+
+def enforce_sonnet(rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no):
+    leaders = [2, 3, 6, 7, 10, 11, 13]
+    followers = [0, 1, 4, 5, 8, 9, 12]
+    followers_to_leaders = {follower:leader for follower, leader in zip(followers, leaders)}
+    rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no)
+    return rhyming_struct, word

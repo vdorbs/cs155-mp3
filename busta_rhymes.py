@@ -4,7 +4,7 @@ from tests.utils import load_data
 import json
 
 def lw(word):
-    return word.rsplit(' ', 1)[1].strip('"\'.,;:-!?()').lower()
+    return word.rsplit(' ', 1)[1].strip('.,;:-!?()')#.lower()
 
 def busta_rhymes(path='data/shakespeare.txt'):
     data = load_data(path)

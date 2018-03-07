@@ -26,7 +26,8 @@ def join_sonnets(data):
     data:       A list of strings
     """
     return ["\n".join(sonnet) for sonnet in data]
-    
+
+
 def group_characters(data):
     """
     Input:
@@ -61,4 +62,8 @@ def split_by_syllables(data):
 def flatten_sonnets(data):
     return list(itertools.chain(*data))
 
+def reverse_lines(data):
+    return [[line[::-1] for line in sonnet] for sonnet in data]
 
+def reverse_sonnets(data):
+    return [sonnet[::-1] for sonnet in data]
