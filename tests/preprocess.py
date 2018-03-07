@@ -25,7 +25,7 @@ def join_sonnets(data):
     Output:
     data:       A list of strings
     """
-    return ["".join(sonnet) for sonnet in data]
+    return ["\n".join(sonnet) for sonnet in data]
     
 def group_characters(data):
     """
