@@ -36,7 +36,7 @@ def group_characters(data):
     Output:
     data:       A list of of lists of lists of characters of length 41 (with the output in the last index)
     """
-    return [[[chr for chr in sonnet[i:i+41]] for i in range(len(sonnet) - 40)] for sonnet in data]
+    return [[[char for char in sonnet[i:i+41]] for i in range(len(sonnet) - 40)] for sonnet in data]
 
 def split_by_words(data):
     """
