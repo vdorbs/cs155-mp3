@@ -7,6 +7,9 @@ import pyphen
 
 from .utils import *
 
+def to_lowercase(data):
+    return [[line.lower() for line in sonnet] for sonnet in data]
+
 def strip_punctuation(data):
     """
     Input:
@@ -38,6 +41,16 @@ def group_characters(data):
     """
     return [[[char for char in sonnet[i:i+41]] for i in range(len(sonnet) - 40)] for sonnet in data]
 
+def group_syl(data):
+    """
+    Input:
+    data:      A list of list of syl
+
+    Output:
+    data:      A list of lists of lists of syl of length 9
+    """
+    return [[sonnet[i:i+9] for i in range(len(sonnet) - 8)] for sonnet in data]
+
 def split_by_words(data):
     """
     Input:
@@ -58,6 +71,22 @@ def split_by_syllables(data):
     """
     syl = pyphen.Pyphen(lang='en')
     return [[split_line_by_syllable(line, syl.inserted) for line in sonnet] for sonnet in data]
+
+def join_sonnet_syllables(data):
+    """
+    Input:
+    data:       A list of lists of lists of syllables
+
+    Output:
+    data:       A list of lists of syllables (with \n characters in between lines)
+    """
+    result = []
+    for sonnet in data:
+        son = []
+        for line in sonnet:
+            son.extend(line + ["\n"])
+        result.append(son)
+    return result
 
 def flatten_sonnets(data):
     return list(itertools.chain(*data))
