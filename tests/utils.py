@@ -1,6 +1,6 @@
 import json
 import itertools
-from numpy import cumsum, floor, zeros
+from numpy import cumsum, where, zeros
 from numpy.random import rand
 
 def append_space(syllable_list):
@@ -40,7 +40,9 @@ def get_sequence_lengths(data):
     return [len(line) for line in data]
 
 def sample(p):
-    return floor(cumsum(p) - rand()).tolist().index(0)
+    P = cumsum(p)
+    r = rand() * max(P)
+    return len(where(P < r)[0])
 
 def load_rhymes(path='data/rhyming_dictionary.json'):
     with open(path, 'r') as fh:
@@ -105,5 +107,11 @@ def enforce_sonnet(rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_to
     leaders = [2, 3, 6, 7, 10, 11, 13]
     followers = [0, 1, 4, 5, 8, 9, 12]
     followers_to_leaders = {follower:leader for follower, leader in zip(followers, leaders)}
+    rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no)
+    return rhyming_struct, word
+
+def enforce_limerick(rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no):
+    leaders = [3, 4]
+    followers_to_leaders = { 0:4, 1:4, 2:3 }
     rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no)
     return rhyming_struct, word
