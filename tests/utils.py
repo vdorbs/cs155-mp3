@@ -1,8 +1,9 @@
 import json
 import itertools
-from numpy import cumsum, floor, zeros
+from numpy import cumsum, where, zeros
 from numpy.random import rand
 import numpy as np
+import random
 
 def append_space(syllable_list):
     """
@@ -40,12 +41,22 @@ def apply_token_dictionary(token_dictionary, data):
 def get_sequence_lengths(data):
     return [len(line) for line in data]
 
+
+def randIndex(probs):
+    # Returns an index of probs with its corresponding probability                                                                         
+    rand = random.random()
+    cumulative_prob = 0.
+    for i, p in enumerate(probs):
+        cumulative_prob += p
+        if rand < cumulative_prob:
+            return i
+
 def sample(p, temp = 1.0):
     logits = np.log(p) / temp
     exp_logits = np.exp(logits)
     new_p = exp_logits / np.sum(exp_logits)
-    result = np.random.multinomial(1, new_p, 1)
-    return np.where(result[0]==1)[0][0]
+    return randIndex(new_p)
+
 
 def load_rhymes(path='data/rhyming_dictionary.json'):
     with open(path, 'r') as fh:
@@ -110,5 +121,11 @@ def enforce_sonnet(rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_to
     leaders = [2, 3, 6, 7, 10, 11, 13]
     followers = [0, 1, 4, 5, 8, 9, 12]
     followers_to_leaders = {follower:leader for follower, leader in zip(followers, leaders)}
+    rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no)
+    return rhyming_struct, word
+
+def enforce_limerick(rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no):
+    leaders = [3, 4]
+    followers_to_leaders = { 0:4, 1:4, 2:3 }
     rhyming_struct, word = enforce_rhyming(leaders, followers_to_leaders, rhyming_struct, rhyming_dictionary, token_to_elem, elem_to_token, p_emit, line_no)
     return rhyming_struct, word
