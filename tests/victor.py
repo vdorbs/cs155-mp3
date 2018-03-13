@@ -4,11 +4,20 @@ from .preprocess import strip_punctuation, split_by_words, split_by_syllables, f
 from .utils import get_sequence_lengths, sample, enforce_sonnet
 
 from numpy import concatenate, reshape
+from .HMM_helper import (
+    text_to_wordcloud,
+    states_to_wordclouds,
+    parse_observations,
+    sample_sentence,
+    visualize_sparsities,
+    animate_emission
+)
 from hmmlearn.hmm import MultinomialHMM
 import pyphen
 
 def _fit(model, data):
     model.fit(reshape(concatenate(data), (-1, 1)), get_sequence_lengths(data))
+    visualize_sparsities(model, O_max_cols=50)
 
 def _run_syllables(model, token_to_elem):
     sequence, _ = model.sample(140)
@@ -17,6 +26,11 @@ def _run_syllables(model, token_to_elem):
     return sequence
 
 def _run_words(model, token_to_elem):
+    print("VISUALIZING SPARSITIES")
+    visualize_sparsities(model, O_max_cols=50)
+    print("WORDCLOUDS")
+    wordclouds = states_to_wordclouds(hmm, token_to_elem, max_words=50)
+    
     syl = pyphen.Pyphen(lang='en')
     sonnet = ''
     state = None
@@ -71,8 +85,8 @@ def _run_rhymes(model, token_to_elem, rhyming_dictionary):
 
 ts = TestSweet()
 
-states = 25
-n_iter = 100
+states = 15
+n_iter = 10
 
 model = MultinomialHMM(n_components=states, n_iter=n_iter, verbose=True)
 fit = lambda data: _fit(model, data)

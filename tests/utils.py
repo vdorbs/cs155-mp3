@@ -2,6 +2,7 @@ import json
 import itertools
 from numpy import cumsum, floor, zeros
 from numpy.random import rand
+import numpy as np
 
 def append_space(syllable_list):
     """
@@ -39,8 +40,12 @@ def apply_token_dictionary(token_dictionary, data):
 def get_sequence_lengths(data):
     return [len(line) for line in data]
 
-def sample(p):
-    return floor(cumsum(p) - rand()).tolist().index(0)
+def sample(p, temp = 1.0):
+    logits = np.log(p) / temp
+    exp_logits = np.exp(logits)
+    new_p = exp_logits / np.sum(exp_logits)
+    result = np.random.multinomial(1, new_p, 1)
+    return np.where(result[0]==1)[0][0]
 
 def load_rhymes(path='data/rhyming_dictionary.json'):
     with open(path, 'r') as fh:
